@@ -88,7 +88,7 @@ def count(filename):
     '''os.chdir("..")'''
     path=os.getcwd()
     print(path)
-    filepath = os.path.join(path,filename[2:].replace("/","\\"))
+    filepath = os.path.join(path,filename[2:].replace("/","\"))
     print(filepath)
     input_file = open(filepath,"r+")
     reader_file = csv.reader(input_file)
