@@ -84,7 +84,7 @@ def count(filename):
     Test file: tests/test_count.py
     Note: The return value should be an integer
     '''
-    filepath= os.path.abspath("."+filename)
+    filepath= os.path.abspath(filename)
     input_file = open(filepath,"r+")
     reader_file = csv.reader(input_file)
     row_count = len(list(reader_file))
@@ -98,7 +98,7 @@ def parks(filename):
     Test file: tests/test_parks.py
     Note: The return value should be an integer
     '''
-    filepath= os.path.abspath("."+filename)
+    filepath= os.path.abspath(filename)
     input_file = open(filepath,"r+")
     reader_file = csv.reader(input_file)
     list=[]
@@ -121,7 +121,7 @@ def uniq_parks(filename):
     Note: The return value should be a string with one park name per line
     '''
     '''os.chdir("..")'''
-    filepath= os.path.abspath("."+filename)
+    filepath= os.path.abspath(filename)
     input_file = open(filepath,"r+")
     reader_file = csv.reader(input_file)
     list=[]
@@ -151,7 +151,7 @@ def uniq_parks_counts(filename):
           Have a look at the file *tests/list_parks_count.txt* to get the exact return format.
     '''
     '''os.chdir("..")'''
-    filepath= os.path.abspath("."+filename)
+    filepath= os.path.abspath(filename)
     input_file = open(filepath,"r+",encoding="utf8")
     reader_file = csv.reader(input_file)
     list=[]
@@ -185,7 +185,7 @@ def frequent_parks_count(filename):
     Note: The return value should be a CSV string.
           Have a look at the file *tests/frequent.txt* to get the exact return format.
     '''
-    filepath= os.path.abspath("."+filename)
+    filepath= os.path.abspath(filename)
     input_file = open(filepath,"r+",encoding="utf8")
     reader_file = csv.reader(input_file)
     list=[]
@@ -219,10 +219,10 @@ def intersection(filename1, filename2):
           Have a look at the file *tests/intersection.txt* to get the exact return format.
     '''
     '''os.chdir("..")'''
-    filepath1= os.path.abspath("."+filename1)
+    filepath1= os.path.abspath(filename1)
     input_file1 = open(filepath1,"r+",encoding="utf8")
     reader_file1 = csv.reader(input_file1)
-    filepath2= os.path.abspath("."+filename2)
+    filepath2= os.path.abspath(filename2)
     input_file2 = open(filepath2,"r+",encoding="utf8")
     reader_file2 = csv.reader(input_file2)
     list1=[]
@@ -273,7 +273,7 @@ def count_rdd(filename):
     '''
 
     spark = init_spark()
-    filepath= os.path.abspath("."+filename)
+    filepath= os.path.abspath(filename)
     oip=spark.read.format("csv").option("header","true").load(filepath).rdd.collect()
     length=len(oip)
     return length
@@ -289,7 +289,7 @@ def parks_rdd(filename):
     '''
     spark = init_spark()
     count=0
-    filepath= os.path.abspath("."+filename)
+    filepath= os.path.abspath(filename)
     oip=spark.read.format("csv").option("header","true").load(filepath).rdd.collect()
     for data in oip[1:]:
         if data[6] is not None:
@@ -309,7 +309,7 @@ def uniq_parks_rdd(filename):
     spark = init_spark()
     count=0
     output=[]
-    filepath= os.path.abspath("."+filename)
+    filepath= os.path.abspath(filename)
     oip=spark.read.format("csv").option("header","true").load(filepath).rdd.collect()
     for data in oip[1:]:
         if data[6] is not None and data[6] not in output:
@@ -337,7 +337,7 @@ def uniq_parks_counts_rdd(filename):
     spark = init_spark()
     count=0
     output={}
-    filepath= os.path.abspath("."+filename)
+    filepath= os.path.abspath(filename)
     oip=spark.read.format("csv").option("header","true").load(filepath).rdd.collect()
     for data in oip[1:]:
         if data[6]!="" and data[6] is not None:
@@ -369,7 +369,7 @@ def frequent_parks_count_rdd(filename):
     spark = init_spark()
     count=0
     output={}
-    filepath= os.path.abspath("."+filename)
+    filepath= os.path.abspath(filename)
     oip=spark.read.format("csv").option("header","true").load(filepath).rdd.collect()
     for data in oip[1:]:
         if data[6]!="" and data[6] is not None:
@@ -401,8 +401,8 @@ def intersection_rdd(filename1, filename2):
     count=0
     output1=[]
     output2=[]
-    filepath1= os.path.abspath("."+filename1)
-    filepath2= os.path.abspath("."+filename2)
+    filepath1= os.path.abspath(filename1)
+    filepath2= os.path.abspath(filename2)
     oip1=spark.read.format("csv").option("header","true").load(filepath1).rdd.collect()
     oip2=spark.read.format("csv").option("header","true").load(filepath2).rdd.collect()
     for data in oip1[1:]:
@@ -449,7 +449,7 @@ def count_df(filename):
     '''
 
     spark = init_spark()
-    filepath= os.path.abspath("."+filename)
+    filepath= os.path.abspath(filename)
     oip=spark.read.format("csv").option("header","true").load(filepath).collect()
     length=len(oip)
     return length
@@ -466,7 +466,7 @@ def parks_df(filename):
 
     spark = init_spark()
     count=0
-    filepath= os.path.abspath("."+filename)
+    filepath= os.path.abspath(filename)
     oip=spark.read.format("csv").option("header","true").load(filepath).collect()
     for data in oip[1:]:
         if data[6] is not None:
@@ -487,7 +487,7 @@ def uniq_parks_df(filename):
     spark = init_spark()
     count=0
     output=[]
-    filepath= os.path.abspath("."+filename)
+    filepath= os.path.abspath(filename)
     oip=spark.read.format("csv").option("header","true").load(filepath).collect()
     for data in oip[1:]:
         if data[6] is not None and data[6] not in output:
@@ -515,7 +515,7 @@ def uniq_parks_counts_df(filename):
 
     spark = init_spark()
     output={}
-    filepath= os.path.abspath("."+filename)
+    filepath= os.path.abspath(filename)
     oip=spark.read.format("csv").option("header","true").load(filepath).collect()
     for data in oip[1:]:
         if data[6]!="" and data[6] is not None:
@@ -546,7 +546,7 @@ def frequent_parks_count_df(filename):
 
     spark = init_spark()
     output={}
-    filepath= os.path.abspath("."+filename)
+    filepath= os.path.abspath(filename)
     oip=spark.read.format("csv").option("header","true").load(filepath).collect()
     for data in oip[1:]:
         if data[6]!="" and data[6] is not None:
@@ -578,8 +578,8 @@ def intersection_df(filename1, filename2):
     count=0
     output1=[]
     output2=[]
-    filepath1= os.path.abspath("."+filename1)
-    filepath2= os.path.abspath("."+filename2)
+    filepath1= os.path.abspath(filename1)
+    filepath2= os.path.abspath(filename2)
     oip1=spark.read.format("csv").option("header","true").load(filepath1).collect()
     oip2=spark.read.format("csv").option("header","true").load(filepath2).collect()
     for data in oip1[1:]:
@@ -619,7 +619,7 @@ def count_dask(filename):
     Test file: tests/test_count_dask.py
     Note: The return value should be an integer
     '''
-    filepath= os.path.abspath("."+filename)
+    filepath= os.path.abspath(filename)
     filedata=df.read_csv(filepath,dtype='str')
     lenth=len(filedata)
     return lenth
@@ -633,7 +633,7 @@ def parks_dask(filename):
     Test file: tests/test_parks_dask.py
     Note: The return value should be an integer
     '''
-    filepath= os.path.abspath("."+filename)
+    filepath= os.path.abspath(filename)
     filedata=df.read_csv(filepath,dtype='str')
     count=filedata['Nom_parc'].notnull().sum().compute()
     return count
@@ -649,7 +649,7 @@ def uniq_parks_dask(filename):
     Test file: tests/test_uniq_parks_dask.py
     Note: The return value should be a CSV string
     '''
-    filepath= os.path.abspath("."+filename)
+    filepath= os.path.abspath(filename)
     filedata=df.read_csv(filepath,dtype='str')
     data1=filedata['Nom_parc'].unique().compute()
     data=data1.dropna()
@@ -678,7 +678,7 @@ def uniq_parks_counts_dask(filename):
     Note: The return value should be a CSV string
           Have a look at the file *tests/list_parks_count.txt* to get the exact return format.
     '''
-    filepath= os.path.abspath("."+filename)
+    filepath= os.path.abspath(filename)
     filedata=df.read_csv(filepath,dtype='str')
     data=filedata['Nom_parc']
     data1=data.dropna()
@@ -706,7 +706,7 @@ def frequent_parks_count_dask(filename):
     Note: The return value should be a CSV string.
           Have a look at the file *tests/frequent.txt* to get the exact return format.
     '''
-    filepath= os.path.abspath("."+filename)
+    filepath= os.path.abspath(filename)
     filedata=df.read_csv(filepath,dtype='str')
     data=filedata['Nom_parc']
     data1=data.dropna()
@@ -734,8 +734,8 @@ def intersection_dask(filename1, filename2):
     Note: The return value should be a CSV string.
           Have a look at the file *tests/intersection.txt* to get the exact return format.
     '''
-    filepath1= os.path.abspath("."+filename1)
-    filepath2= os.path.abspath("."+filename2)
+    filepath1= os.path.abspath(filename1)
+    filepath2= os.path.abspath(filename2)
     filedata1=df.read_csv(filepath1,dtype='str')
     filedata2=df.read_csv(filepath2,dtype='str')
     data_1=filedata1['Nom_parc'].unique().compute()
