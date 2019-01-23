@@ -637,7 +637,6 @@ def parks_dask(filename):
     filedata=df.read_csv(filepath,dtype='str')
     count=filedata['Nom_parc'].notnull().sum().compute()
     return count
-    '''print(size)'''
     # ADD YOUR CODE HERE
     '''raise Exception("Not implemented yet")'''
 
