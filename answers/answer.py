@@ -85,7 +85,7 @@ def count(filename):
     Note: The return value should be an integer
     '''
     filepath= os.path.abspath(filename)
-    input_file = open(filepath,"r+")
+    input_file = open(filename[2:],"r+")
     reader_file = csv.reader(input_file)
     row_count = len(list(reader_file))
     return int(row_count-1)
