@@ -84,8 +84,8 @@ def count(filename):
     Test file: tests/test_count.py
     Note: The return value should be an integer
     '''
-    filepath= os.path.abspath(filename)
-    input_file = open(filename[2:],"r+")
+    ''''''
+    input_file = open(filename,"r+")
     reader_file = csv.reader(input_file)
     row_count = len(list(reader_file))
     return int(row_count-1)
@@ -98,8 +98,8 @@ def parks(filename):
     Test file: tests/test_parks.py
     Note: The return value should be an integer
     '''
-    filepath= os.path.abspath(filename)
-    input_file = open(filepath,"r+")
+    ''''''
+    input_file = open(filename,"r+")
     reader_file = csv.reader(input_file)
     list=[]
     count=0
@@ -120,9 +120,10 @@ def uniq_parks(filename):
     Test file: tests/test_uniq_parks.py
     Note: The return value should be a string with one park name per line
     '''
-    '''os.chdir("..")'''
-    filepath= os.path.abspath(filename)
-    input_file = open(filepath,"r+")
+    '''os.chdir("..")
+    p=os.getcwd()
+    filepath=os.path.join(p,filename[2:].replace("/","\\"))'''
+    input_file = open(filename,"r+",encoding="ISO-8859-1")
     reader_file = csv.reader(input_file)
     list=[]
     count=0
@@ -133,11 +134,10 @@ def uniq_parks(filename):
         if data[6]!="" and data[6] not in output:
             output.append(data[6])
     sorted_output=sorted(output)
-    string_val=''
+    string_val=""
     for val in sorted_output:
-        string_val = string_val + val + os.linesep
-    op=string_val[:-1].strip()
-    return op
+        string_val = string_val + val +"\n"
+    return string_val
     '''raise Exception("Not implemented yet")'''
 
 def uniq_parks_counts(filename):
@@ -150,9 +150,7 @@ def uniq_parks_counts(filename):
     Note: The return value should be a CSV string
           Have a look at the file *tests/list_parks_count.txt* to get the exact return format.
     '''
-    '''os.chdir("..")'''
-    filepath= os.path.abspath(filename)
-    input_file = open(filepath,"r+",encoding="utf8")
+    input_file = open(filename,"r+",encoding="ISO-8859-1")
     reader_file = csv.reader(input_file)
     list=[]
     count=0
@@ -167,11 +165,10 @@ def uniq_parks_counts(filename):
                 op=output.get(data[6])
                 output[data[6]]=op+1
     final_output=dict(sorted(output.items()))
-    string_val=''
+    string_val=""
     for key,val in final_output.items():
-        string_val = string_val + key +','+ str(val)
-    op=string_val.strip()
-    return op
+        string_val = string_val + key +','+ str(val)+"\n"
+    return string_val
     # ADD YOUR CODE HERE
     '''raise Exception("Not implemented yet")'''
 
@@ -185,8 +182,8 @@ def frequent_parks_count(filename):
     Note: The return value should be a CSV string.
           Have a look at the file *tests/frequent.txt* to get the exact return format.
     '''
-    filepath= os.path.abspath(filename)
-    input_file = open(filepath,"r+",encoding="utf8")
+    
+    input_file = open(filename,"r+")
     reader_file = csv.reader(input_file)
     list=[]
     count=0
@@ -200,12 +197,11 @@ def frequent_parks_count(filename):
             else:
                 op=output.get(data[6])
                 output[data[6]]=op+1
-    final_output=sorted(output.items(), key=lambda x: x[1],reverse=True)[:10]
-    string_val=''
+    final_output=dict(sorted(output.items(), key=lambda x: x[1],reverse=True)[:10])
+    string_val=""
     for key,val in final_output.items():
-        string_val = string_val + key +','+ str(val)
-    op=string_val.strip()
-    return op
+        string_val = string_val + key +','+ str(val)+"\n"
+    return string_val
     # ADD YOUR CODE HERE
     '''raise Exception("Not implemented yet")'''
 
@@ -219,11 +215,9 @@ def intersection(filename1, filename2):
           Have a look at the file *tests/intersection.txt* to get the exact return format.
     '''
     '''os.chdir("..")'''
-    filepath1= os.path.abspath(filename1)
-    input_file1 = open(filepath1,"r+",encoding="utf8")
+    input_file1 = open(filename1,"r+",encoding="ISO-8859-1")
     reader_file1 = csv.reader(input_file1)
-    filepath2= os.path.abspath(filename2)
-    input_file2 = open(filepath2,"r+",encoding="utf8")
+    input_file2 = open(filename2,"r+",encoding="ISO-8859-1")
     reader_file2 = csv.reader(input_file2)
     list1=[]
     list2=[]
@@ -241,11 +235,10 @@ def intersection(filename1, filename2):
             output2.append(data[6])
     final_output=set(output1) & set(output2)
     sorted_op=sorted(final_output, key=lambda x: x[0])
-    string_val=''
+    string_val=""
     for item in sorted_op:
-        string_val = string_val + str(item) +','
-    op=string_val.strip()
-    return op
+        string_val = string_val + str(item) +"\n"
+    return string_val
     # ADD YOUR CODE HERE
     '''raise Exception("Not implemented yet")'''
 
@@ -273,8 +266,8 @@ def count_rdd(filename):
     '''
 
     spark = init_spark()
-    filepath= os.path.abspath(filename)
-    oip=spark.read.format("csv").option("header","true").load(filepath).rdd.collect()
+    
+    oip=spark.read.format("csv").option("header","true").load(filename).rdd.collect()
     length=len(oip)
     return length
     # ADD YOUR CODE HERE
@@ -289,8 +282,8 @@ def parks_rdd(filename):
     '''
     spark = init_spark()
     count=0
-    filepath= os.path.abspath(filename)
-    oip=spark.read.format("csv").option("header","true").load(filepath).rdd.collect()
+    
+    oip=spark.read.format("csv").option("header","true").load(filename).rdd.collect()
     for data in oip[1:]:
         if data[6] is not None:
            count= count+1
@@ -309,17 +302,17 @@ def uniq_parks_rdd(filename):
     spark = init_spark()
     count=0
     output=[]
-    filepath= os.path.abspath(filename)
-    oip=spark.read.format("csv").option("header","true").load(filepath).rdd.collect()
+    
+    oip=spark.read.format("csv").option("header","true").option("encoding","ISO-8859-1").load(filename).rdd.collect()
     for data in oip[1:]:
         if data[6] is not None and data[6] not in output:
             output.append(data[6])
-    sorted_output=sorted(output,key=lambda x: x[0])
-    string_val=''
+    sorted_output=sorted(output)
+    print(sorted_output)
+    string_val=""
     for val in sorted_output:
-        string_val = string_val + val +','
-    op=string_val[:-1].strip()
-    return op
+        string_val = string_val + val +"\n"
+    return string_val
     # ADD YOUR CODE HERE
     '''raise Exception("Not implemented yet")'''
 
@@ -337,8 +330,8 @@ def uniq_parks_counts_rdd(filename):
     spark = init_spark()
     count=0
     output={}
-    filepath= os.path.abspath(filename)
-    oip=spark.read.format("csv").option("header","true").load(filepath).rdd.collect()
+    
+    oip=spark.read.format("csv").option("header","true").option("encoding","ISO-8859-1").load(filename).rdd.collect()
     for data in oip[1:]:
         if data[6]!="" and data[6] is not None:
             if data[6] not in output:
@@ -347,11 +340,10 @@ def uniq_parks_counts_rdd(filename):
                 op=output.get(data[6])
                 output[data[6]]=op+1
     final_output=dict(sorted(output.items()))
-    string_val=''
+    string_val=""
     for key,val in final_output.items():
-        string_val = string_val + key +','+ str(val)
-    op=string_val.strip()
-    return op
+        string_val = string_val + key +','+ str(val)+"\n"
+    return string_val
     # ADD YOUR CODE HERE
     '''raise Exception("Not implemented yet")'''
 
@@ -369,8 +361,8 @@ def frequent_parks_count_rdd(filename):
     spark = init_spark()
     count=0
     output={}
-    filepath= os.path.abspath(filename)
-    oip=spark.read.format("csv").option("header","true").load(filepath).rdd.collect()
+    
+    oip=spark.read.format("csv").option("header","true").option("encoding","ISO-8859-1").load(filename).rdd.collect()
     for data in oip[1:]:
         if data[6]!="" and data[6] is not None:
             if data[6] not in output:
@@ -378,12 +370,11 @@ def frequent_parks_count_rdd(filename):
             else:
                 op=output.get(data[6])
                 output[data[6]]=op+1
-    final_output=sorted(output.items(), key=lambda x: x[1],reverse=True)[:10]
-    string_val=''
+    final_output=dict(sorted(output.items(), key=lambda x: x[1],reverse=True)[:10])
+    string_val=""
     for key,val in final_output.items():
-        string_val = string_val + key +','+ str(val)
-    op=string_val.strip()
-    return op
+        string_val = string_val + key +','+ str(val)+"\n"
+    return string_val
     # ADD YOUR CODE HERE
     '''raise Exception("Not implemented yet")'''
 
@@ -401,10 +392,10 @@ def intersection_rdd(filename1, filename2):
     count=0
     output1=[]
     output2=[]
-    filepath1= os.path.abspath(filename1)
-    filepath2= os.path.abspath(filename2)
-    oip1=spark.read.format("csv").option("header","true").load(filepath1).rdd.collect()
-    oip2=spark.read.format("csv").option("header","true").load(filepath2).rdd.collect()
+    filename1= os.path.abspath(filename1)
+    filename2= os.path.abspath(filename2)
+    oip1=spark.read.format("csv").option("header","true").option("encoding","ISO-8859-1").load(filename1).rdd.collect()
+    oip2=spark.read.format("csv").option("header","true").option("encoding","ISO-8859-1").load(filename2).rdd.collect()
     for data in oip1[1:]:
         if data[6]!="" and data[6] is not None:
             if data[6] not in output1:
@@ -415,11 +406,10 @@ def intersection_rdd(filename1, filename2):
                 output2.append(data[6])
     final_output=set(output1) & set(output2)
     sorted_op=sorted(final_output, key=lambda x: x[0])
-    string_val=''
+    string_val=""
     for item in sorted_op:
-        string_val = string_val + str(item) +','
-    op=string_val.strip()
-    return op
+        string_val = string_val + str(item) +"\n"
+    return string_val
     # ADD YOUR CODE HERE
     '''raise Exception("Not implemented yet")'''
 
@@ -449,8 +439,8 @@ def count_df(filename):
     '''
 
     spark = init_spark()
-    filepath= os.path.abspath(filename)
-    oip=spark.read.format("csv").option("header","true").load(filepath).collect()
+    
+    oip=spark.read.format("csv").option("header","true").load(filename).collect()
     length=len(oip)
     return length
     # ADD YOUR CODE HERE
@@ -466,8 +456,8 @@ def parks_df(filename):
 
     spark = init_spark()
     count=0
-    filepath= os.path.abspath(filename)
-    oip=spark.read.format("csv").option("header","true").load(filepath).collect()
+    
+    oip=spark.read.format("csv").option("header","true").load(filename).collect()
     for data in oip[1:]:
         if data[6] is not None:
            count= count+1
@@ -487,17 +477,16 @@ def uniq_parks_df(filename):
     spark = init_spark()
     count=0
     output=[]
-    filepath= os.path.abspath(filename)
-    oip=spark.read.format("csv").option("header","true").load(filepath).collect()
+    
+    oip=spark.read.format("csv").option("header","true").option("encoding","ISO-8859-1").load(filename).collect()
     for data in oip[1:]:
         if data[6] is not None and data[6] not in output:
             output.append(data[6])
-    sorted_output=sorted(output,key=lambda x: x[0])
-    string_val=''
+    sorted_output=sorted(output)
+    string_val=""
     for val in sorted_output:
-        string_val = string_val + val +','
-    op=string_val[:-1].strip()
-    return op
+        string_val = string_val + val + "\n"
+    return string_val
     
     # ADD YOUR CODE HERE
     raise Exception("Not implemented yet")
@@ -515,8 +504,8 @@ def uniq_parks_counts_df(filename):
 
     spark = init_spark()
     output={}
-    filepath= os.path.abspath(filename)
-    oip=spark.read.format("csv").option("header","true").load(filepath).collect()
+    
+    oip=spark.read.format("csv").option("header","true").option("encoding","ISO-8859-1").load(filename).collect()
     for data in oip[1:]:
         if data[6]!="" and data[6] is not None:
             if data[6] not in output:
@@ -525,11 +514,10 @@ def uniq_parks_counts_df(filename):
                 op=output.get(data[6])
                 output[data[6]]=op+1
     final_output=dict(sorted(output.items()))
-    string_val=''
+    string_val=""
     for key,val in final_output.items():
-        string_val = string_val + key +','+ str(val)
-    op=string_val.strip()
-    return op
+        string_val = string_val + key +','+ str(val)+"\n"
+    return string_val
     # ADD YOUR CODE HERE
     '''raise Exception("Not implemented yet")'''
 
@@ -546,8 +534,8 @@ def frequent_parks_count_df(filename):
 
     spark = init_spark()
     output={}
-    filepath= os.path.abspath(filename)
-    oip=spark.read.format("csv").option("header","true").load(filepath).collect()
+    
+    oip=spark.read.format("csv").option("header","true").option("encoding","ISO-8859-1").load(filename).collect()
     for data in oip[1:]:
         if data[6]!="" and data[6] is not None:
             if data[6] not in output:
@@ -555,12 +543,11 @@ def frequent_parks_count_df(filename):
             else:
                 op=output.get(data[6])
                 output[data[6]]=op+1
-    final_output=sorted(output.items(), key=lambda x: x[1],reverse=True)[:10]
-    string_val=''
+    final_output=dict(sorted(output.items(), key=lambda x: x[1],reverse=True)[:10])
+    string_val=""
     for key,val in final_output.items():
-        string_val = string_val + key +','+ str(val)
-    op=string_val.strip()
-    return op
+        string_val = string_val + key +','+ str(val)+"\n"
+    return string_val
     # ADD YOUR CODE HERE
     '''raise Exception("Not implemented yet")'''
 
@@ -578,10 +565,8 @@ def intersection_df(filename1, filename2):
     count=0
     output1=[]
     output2=[]
-    filepath1= os.path.abspath(filename1)
-    filepath2= os.path.abspath(filename2)
-    oip1=spark.read.format("csv").option("header","true").load(filepath1).collect()
-    oip2=spark.read.format("csv").option("header","true").load(filepath2).collect()
+    oip1=spark.read.format("csv").option("header","true").option("encoding","ISO-8859-1").load(filename1).collect()
+    oip2=spark.read.format("csv").option("header","true").option("encoding","ISO-8859-1").load(filename2).collect()
     for data in oip1[1:]:
         if data[6]!="" and data[6] is not None:
             if data[6] not in output1:
@@ -592,11 +577,10 @@ def intersection_df(filename1, filename2):
                 output2.append(data[6])
     final_output=set(output1) & set(output2)
     sorted_op=sorted(final_output, key=lambda x: x[0])
-    string_val=''
+    string_val=""
     for item in sorted_op:
-        string_val = string_val + str(item) +','
-    op=string_val.strip()
-    return op
+        string_val = string_val + str(item) +"\n"
+    return string_val
     # ADD YOUR CODE HERE
     '''raise Exception("Not implemented yet")'''
 
@@ -619,8 +603,8 @@ def count_dask(filename):
     Test file: tests/test_count_dask.py
     Note: The return value should be an integer
     '''
-    filepath= os.path.abspath(filename)
-    filedata=df.read_csv(filepath,dtype='str')
+    
+    filedata=df.read_csv(filename,dtype='str')
     lenth=len(filedata)
     return lenth
     # ADD YOUR CODE HERE
@@ -633,8 +617,8 @@ def parks_dask(filename):
     Test file: tests/test_parks_dask.py
     Note: The return value should be an integer
     '''
-    filepath= os.path.abspath(filename)
-    filedata=df.read_csv(filepath,dtype='str')
+    
+    filedata=df.read_csv(filename,dtype='str')
     count=filedata['Nom_parc'].notnull().sum().compute()
     return count
     # ADD YOUR CODE HERE
@@ -648,8 +632,8 @@ def uniq_parks_dask(filename):
     Test file: tests/test_uniq_parks_dask.py
     Note: The return value should be a CSV string
     '''
-    filepath= os.path.abspath(filename)
-    filedata=df.read_csv(filepath,dtype='str')
+    
+    filedata=df.read_csv(filename,dtype='str',encoding="ISO-8859-1")
     data1=filedata['Nom_parc'].unique().compute()
     data=data1.dropna()
     opp=set(data)
@@ -658,12 +642,11 @@ def uniq_parks_dask(filename):
         if val is not None:
             if val not in list:
                 list.append(val)
-    sorted_output=sorted(list,key=lambda x: x[0])
-    string_val=''
+    sorted_output=sorted(list)
+    string_val=""
     for val in sorted_output:
-        string_val = string_val + val +','
-    op=string_val[:-1].strip()
-    return op
+        string_val = string_val + val +"\n"
+    return string_val
     # ADD YOUR CODE HERE
     '''raise Exception("Not implemented yet")'''
 
@@ -677,8 +660,8 @@ def uniq_parks_counts_dask(filename):
     Note: The return value should be a CSV string
           Have a look at the file *tests/list_parks_count.txt* to get the exact return format.
     '''
-    filepath= os.path.abspath(filename)
-    filedata=df.read_csv(filepath,dtype='str')
+    
+    filedata=df.read_csv(filename,dtype='str',encoding="ISO-8859-1")
     data=filedata['Nom_parc']
     data1=data.dropna()
     counts=data1.value_counts().compute()
@@ -687,11 +670,10 @@ def uniq_parks_counts_dask(filename):
          if key not in output:
              output[key]=val
     final_output=dict(sorted(output.items()))
-    string_val=''
+    string_val=""
     for key,val in final_output.items():
-        string_val = string_val + key +','+ str(val)
-    op=string_val.strip()
-    return op
+        string_val = string_val + key +','+ str(val)+"\n"
+    return string_val
     # ADD YOUR CODE HERE
     '''raise Exception("Not implemented yet")'''
 
@@ -705,8 +687,8 @@ def frequent_parks_count_dask(filename):
     Note: The return value should be a CSV string.
           Have a look at the file *tests/frequent.txt* to get the exact return format.
     '''
-    filepath= os.path.abspath(filename)
-    filedata=df.read_csv(filepath,dtype='str')
+    
+    filedata=df.read_csv(filename,dtype='str',encoding="ISO-8859-1")
     data=filedata['Nom_parc']
     data1=data.dropna()
     counts=data1.value_counts().compute()
@@ -716,11 +698,10 @@ def frequent_parks_count_dask(filename):
          if key not in output:
              output[key]=val
     '''final_output=dict(sorted(output.items()))'''
-    string_val=''
+    string_val=""
     for key,val in output.items():
-        string_val = string_val + key +','+ str(val)+'\n'
-    op=string_val.strip()
-    return op
+        string_val = string_val + key +','+ str(val)+"\n"
+    return string_val
     # ADD YOUR CODE HERE
     '''raise Exception("Not implemented yet")'''
 
@@ -733,20 +714,17 @@ def intersection_dask(filename1, filename2):
     Note: The return value should be a CSV string.
           Have a look at the file *tests/intersection.txt* to get the exact return format.
     '''
-    filepath1= os.path.abspath(filename1)
-    filepath2= os.path.abspath(filename2)
-    filedata1=df.read_csv(filepath1,dtype='str')
-    filedata2=df.read_csv(filepath2,dtype='str')
+    filedata1=df.read_csv(filename1,dtype='str',encoding="ISO-8859-1")
+    filedata2=df.read_csv(filename2,dtype='str',encoding="ISO-8859-1")
     data_1=filedata1['Nom_parc'].unique().compute()
     data_2=filedata2['Nom_parc'].unique().compute()
     final_data1=data_1.dropna()
     final_data2=data_2.dropna()
     finalop=set(final_data1).intersection(set(final_data2))
     sorted_op=sorted(finalop, key=lambda x: x[0])
-    string_val=''
+    string_val=""
     for item in sorted_op:
-        string_val = string_val + str(item) +','
-    op=string_val.strip()
-    return op
+        string_val = string_val + str(item) +"\n"
+    return string_val
     # ADD YOUR CODE HERE
     '''raise Exception("Not implemented yet")'''
