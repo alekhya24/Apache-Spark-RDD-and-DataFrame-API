@@ -183,7 +183,7 @@ def frequent_parks_count(filename):
           Have a look at the file *tests/frequent.txt* to get the exact return format.
     '''
     
-    input_file = open(filename,"r+")
+    input_file = open(filename,"r+",encoding="ISO-8859-1")
     reader_file = csv.reader(input_file)
     list=[]
     count=0
@@ -198,6 +198,7 @@ def frequent_parks_count(filename):
                 op=output.get(data[6])
                 output[data[6]]=op+1
     final_output=dict(sorted(output.items(), key=lambda x: x[1],reverse=True)[:10])
+    print(final_output)
     string_val=""
     for key,val in final_output.items():
         string_val = string_val + key +','+ str(val)+"\n"
@@ -701,6 +702,7 @@ def frequent_parks_count_dask(filename):
     string_val=""
     for key,val in output.items():
         string_val = string_val + key +','+ str(val)+"\n"
+    print (string_val)
     return string_val
     # ADD YOUR CODE HERE
     '''raise Exception("Not implemented yet")'''
