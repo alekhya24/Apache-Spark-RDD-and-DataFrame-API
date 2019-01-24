@@ -199,7 +199,7 @@ def frequent_parks_count(filename):
                 output[data[6]]=op+1
     '''final_output=dict(sorted(output.items(), key=lambda x: x[1],reverse=True)[:10])'''
     sample=[(v, k) for k, v in output.items()]
-    final_output=sorted(sample.items())
+    final_output=sample.sort()
     print(final_output)
     string_val=""
     for key,val in final_output.items():
