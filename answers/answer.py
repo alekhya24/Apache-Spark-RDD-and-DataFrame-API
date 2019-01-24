@@ -197,14 +197,10 @@ def frequent_parks_count(filename):
             else:
                 op=output.get(data[6])
                 output[data[6]]=op+1
-    '''final_output=dict(sorted(output.items(), key=lambda x: x[1],reverse=True)[:10])'''
-    sample=[(v, k) for k, v in output.items()]
-    final_output=sample.sort()
-    print(final_output)
+    final_output=sorted(output.items(), key=lambda x: x[1],reverse=True)[:10]
     string_val=""
     for key,val in final_output.items():
-        string_val = string_val + key +','+ str(val)+"\n"
-    '''print (string_val)'''
+        string_val = string_val + ",".join(map(str, val)) + "\n"
     return string_val
     # ADD YOUR CODE HERE
     '''raise Exception("Not implemented yet")'''
