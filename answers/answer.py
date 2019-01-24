@@ -202,6 +202,7 @@ def frequent_parks_count(filename):
     string_val=""
     for key,val in final_output.items():
         string_val = string_val + key +','+ str(val)+"\n"
+    print (string_val)
     return string_val
     # ADD YOUR CODE HERE
     '''raise Exception("Not implemented yet")'''
