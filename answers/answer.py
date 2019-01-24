@@ -697,7 +697,7 @@ def frequent_parks_count_dask(filename):
     for key,val in final_counts.iteritems():
          if key not in output:
              output[key]=val
-    final_output=sorted(output.items())
+    final_output=sorted(output.items())[:10]
     string_val=""
     for val in final_output:
         string_val = string_val + ",".join(map(str, val)) + "\n"
