@@ -701,7 +701,6 @@ def frequent_parks_count_dask(filename):
     string_val=""
     for val in final_output:
         string_val = string_val + ",".join(map(str, val)) + "\n"
-    print (string_val)
     return string_val
     # ADD YOUR CODE HERE
     '''raise Exception("Not implemented yet")'''
